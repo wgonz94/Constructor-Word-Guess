@@ -1,26 +1,35 @@
 var Letter = require("./Letter.js");
 
-function Word(answer){
-    this.letterObj = [];
-
-    for (var i = 0; i < answer.length; i++) {
-        var letterOpt = new Letter(answer[i]);
-        this.letterObj.push(letterOpt);
-    }
-
-    this.log = function () {
-        answerConsLog = " ";
-        for (var i = 0; i < this.letterObj.length; i++) {
-            answerConsLog += this.letterObj[i] + " ";
+var Word = function(word){
+  
+    this.addletter = function(word){
+        var letterStrg = [];
+        for (var i = 0; i < word.length; i++) {
+            var currentLett = new Letter(word[i]);
+            letterStrg.push(currentLett);
         }
-        
+        return letterStrg;
     }
 
-    this.input = function (input) {
-        for (var i = 0; i < this.letterObj.length; i++) {
-            this.letterObj.guess(input)
+    this.letters = this.addletter(word);
+    this.chosenWord = word;
+
+    this.checkGuess = function(guess){
+        for (var i = 0; i < this.letters,length; i++){
+            this.letters[i].letterGuess(guess);
         }
     }
+
+    this.show = function () {
+        var letterStrg = " ",
+        for (var i = 0; i < this.letters.length; i++){
+            letterStrg += this.letters[i].input()
+        }
+        return letterStrg;
+    }
+
+
+    
 }
 
 module.exports = Word;
