@@ -1,23 +1,25 @@
 var Letter = function (value){
 this.letter = value,
-this.guessed = false,
-this.placeholder = function() {
-    if(this.letter === " "){
-        this.guessed = true;
-        return " ";
-    } else{
-        if(this.guessed === false) {
-            return "_";
-        } else{
-            return this.letter;
-        }
+this.isLetterGuessed = false,
+
+this.input = function(){
+    if(this.letter == " "){
+        return (" ");
+    }
+    else if (this.isLetterGuessed){
+        return (this.letter)
+    } 
+    else if(this.isLetterGuessed === false){
+        return ("_");
     }
 }
-this.guess = function (guess) {
-    if (guess === this.letter) {
-        this.guessed = true;
-        }
+
+this.letterGuess = function(guess) {
+    if(guess.toLowerCase() === this.letter.toLowerCase()){
+        this.isLetterGuessed = true;
     }
+}
+
 }
 
 module.exports = Letter;
