@@ -11,16 +11,113 @@ var chosenWord;
 
 function gamePlay() {
 
+    console.log("Welcome to Word Guess-Halloween Edition!")
+}
+function randomizeWord() {
     randomize = wordList[Math.floor(Math.random() * wordList.length)]
     chosenWord = new Word (randomize)
 
-    console.log("Welcome to Word Guess-Halloween Edition!")
 }
 
 function guessWord() {
     if (guesses > 0 && correctGuesses < 5) {
-        console.log(chosenWord.display())
+        console.log(chosenWord.show())
+
+        inquirer.prompt([
+            {
+                name: "txt",
+                message: "Guess the hidden word!",
+                validate: function (str) {
+                    if (str.length != 1) 
+                    return false;
+                    var regEx = new RegExp("^[a-zA-Z\s]{1,1}$");
+                    return regEx.test(str);
+                }
+            }
+        ]).then(function (guessedLetter) {
+            var guess = guessedLetter.txt;
+            chosenWord.checkGuess(guess);
+
+            if(randomize.toLowerCase().indexOf(guess.toLowerCase()) === -1){
+                guesses--;
+                console.log("\nTry Again- guesses left: " + guesses)
+            } else {
+                if (correctGuesses < 5) {
+                    console.log("Good Job!\n")
+                }
+            }
+            if (randomize === chosenWord.show()) {
+                console.log(chosenWord.show());
+                guesses = 10;
+                correctGuesses++;
+
+                if(correctGuesses < 5) {
+                    console.log("Alright, Next Word!");
+                    randomizeWord();
+                } else{
+                    console.log("Congratulations!")
+                    YouWin();
+                }
+            }
+            if(guesses === 0) {
+                console.log("Oh No! :(")
+                YouLose();
+            }
+
+            guessWord();
+        });
     }
 }
+
+function YouWin(){
+    console.log("You won!! Didn't doubt you for one second!\n")
+
+    inquirer.prompt([
+        {
+            name: "confirm",
+            type: "confirm",
+            message: "Would you like to play again?",
+            default: true
+        }
+    ]).then(function (inquirerAnswer){
+        if(inquirerAnswer.confirm){
+            guesses = 10;
+            correctGuesses = 0;
+            randomizeWord();
+            guessWord();
+        } else{
+            console.log("Okay! Come back soon!");
+            process.exit();
+        }
+    })
+
+}
+
+function YouLose() {
+    console.log("Oh man! you lost!")
+    inquirer.prompt([
+        {
+            name: "confirm",
+            type: "confirm",
+            message: "Would you like to try again?",
+            default: true
+
+        }
+    ]).then(function (inquirerAnswer){
+        if(inquirerAnswer.confirm) {
+            guesses = 10;
+            correctGuesses = 0;
+            randomizeWord();
+            guessWord();
+        } else{
+            console.log("Okay. Come back soon!")
+            process.exit();
+        }
+    })
+}
+
+gamePlay();
+randomizeWord();
+guessWord();
 
 
