@@ -17,4 +17,10 @@ function gamePlay() {
     console.log("Welcome to Word Guess-Halloween Edition!")
 }
 
+function guessWord() {
+    if (guesses > 0 && correctGuesses < 5) {
+        console.log(chosenWord.display())
+    }
+}
+
 
