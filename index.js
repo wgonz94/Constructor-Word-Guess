@@ -26,7 +26,7 @@ function guessWord() {
         inquirer.prompt([
             {
                 name: "txt",
-                message: "Guess the hidden word!",
+                message: "Guess the hidden word!\n",
                 validate: function (str) {
                     if (str.length != 1) 
                     return false;
@@ -37,27 +37,23 @@ function guessWord() {
         ]).then(function (guessedLetter) {
             var guess = guessedLetter.txt;
             chosenWord.checkGuess(guess);
-
             if(randomize.toLowerCase().indexOf(guess.toLowerCase()) === -1){
                 guesses--;
-                console.log("\nTry Again- guesses left: " + guesses)
+                console.log("\nTry Again- guesses left: " + guesses + "     Letters Guesses: " + chosenWord.letterArr)
             } else {
-                if (correctGuesses < 5) {
                     console.log("Good Job!\n")
-                }
             }
-            if (randomize === chosenWord.show()) {
+            if (randomize == chosenWord)    {
                 console.log(chosenWord.show());
                 guesses = 10;
                 correctGuesses++;
+                console.log("\nWins:" + correctGuesses)
+                randomizeWord();
 
-                if(correctGuesses < 5) {
-                    console.log("Alright, Next Word!");
-                    randomizeWord();
-                } else{
-                    console.log("Congratulations!")
+                if(correctGuesses = 5) {
+                    console.log("Congratulations!!");
                     YouWin();
-                }
+                } 
             }
             if(guesses === 0) {
                 console.log("Oh No! :(")
